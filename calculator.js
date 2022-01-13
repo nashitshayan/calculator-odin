@@ -15,6 +15,8 @@ const operate = (num1, num2, operator)=>{
         '*': fMultiply(num1,num2),
         '/': fDivide(num1,num2),
     }
+    if(operation[operator]%1!=0)
+        return Number((operation[operator]).toFixed(11));
     return operation[operator];
 }
 
@@ -54,7 +56,6 @@ const resetVar = ()=>{
     num1= 0;
     num2= '';
     operator= '';
-    finalRes=0;
     flag = false;
 }
 
@@ -66,6 +67,7 @@ listOfNumbers.forEach(numberElem => {
     numberElem.addEventListener('click', ()=>{
         if(isResOnDisplay)
          {
+             resetVar();
             screen.textContent='';
             isResOnDisplay=false;
         }
@@ -137,16 +139,17 @@ equals.addEventListener('click', ()=>{
     // displayValue= fDisplay(equals)
     fAllClear();
     finalRes= operate(Number(num1), Number(num2), operator );
-    screen.textContent= finalRes;
-    resetVar();
+    screen.textContent= /*'Ans: '+*/ finalRes;
+   // resetVar();
     isResOnDisplay=true;
 })
 
 allClear.addEventListener('click', ()=> {
     fAllClear();
     resetVar();
+    finalRes=0;
 })
 
 
-console.log();
+console.log(typeof 0.1);
 
