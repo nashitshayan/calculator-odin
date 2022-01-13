@@ -42,6 +42,7 @@ const allClear = document.getElementById('allClear');
 
 const screen = document.getElementById('screen');
 let displayValue='';
+
 const fDisplay = (elem)=>{
      screen.textContent+= elem.textContent;
      return screen.textContent;
@@ -53,6 +54,7 @@ const resetVar = ()=>{
     num1= 0;
     num2= '';
     operator= '';
+    finalRes=0;
     flag = false;
 }
 
@@ -87,7 +89,7 @@ listOfNumbers.forEach(numberElem => {
 
 //operators
 const setTheNumbers = () =>{
-    if(finalRes!=0)
+    if(finalRes!=0 && operator != '' ) //result of prev calculation will be taken as num1 for next calculation
     {
         num1= finalRes;
         num2= '';
