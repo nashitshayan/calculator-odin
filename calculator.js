@@ -89,7 +89,7 @@ listOfNumbers.forEach(numberElem => {
                 isDot=true;
             }
         }
-        console.log(num1, num2)
+       
     })
 })
 
@@ -126,26 +126,26 @@ plus.addEventListener('click', ()=>{
     setTheNumbers();
     operator= plus.textContent;
     displayValue= fDisplay(plus);
-    console.log(num1, num2)
+    
     
 })
 minus.addEventListener('click', ()=>{
     setTheNumbers();
     operator= minus.textContent;
     displayValue= fDisplay(minus);
-    console.log(num1, num2)
+    
 })
 multiply.addEventListener('click', ()=>{
     setTheNumbers();
     operator= multiply.textContent;
     displayValue= fDisplay(multiply);
-    console.log(num1, num2)
+    
 })
 divide.addEventListener('click', ()=>{
     setTheNumbers();
     operator= divide.textContent;
     displayValue= fDisplay(divide);
-    console.log(num1, num2)
+    
 })
 
 
@@ -166,7 +166,9 @@ allClear.addEventListener('click', ()=> {
     resetVar();
     finalRes=0;
 })
+del.addEventListener('click', ()=>{
+    if(!isResOnDisplay)
+        screen.textContent=screen.textContent.slice(0,-1);
+})
 
-
-console.log(typeof 0.1);
 
