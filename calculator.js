@@ -57,6 +57,7 @@ const resetVar = ()=>{
     num2= '';
     operator= '';
     flag = false;
+    isDot=false;
 }
 
 let isResOnDisplay= false;
@@ -64,8 +65,15 @@ const numbersDiv= document.querySelector('.numbers');
 const listOfNumbers= Array.from(numbersDiv.children);
 
 listOfNumbers.forEach(numberElem => {
+  
     numberElem.addEventListener('click', ()=>{
-        if(isResOnDisplay)
+        //stop multiple decimal points
+        if(numberElem=== dot && isDot)
+        {
+            return;
+        }
+        else {
+            if(isResOnDisplay)
          {
              resetVar();
             screen.textContent='';
@@ -76,7 +84,11 @@ listOfNumbers.forEach(numberElem => {
             num2+=numberElem.textContent;
         }
         displayValue= fDisplay(numberElem);
-
+        if(numberElem === dot) // set isDot to true for the first entry of dot.
+            {
+                isDot=true;
+            }
+        }
         console.log(num1, num2)
     })
 })
@@ -87,10 +99,12 @@ listOfNumbers.forEach(numberElem => {
  let operator= '';
  let flag = false;
  let finalRes= 0;
+ let isDot=false;
 
 
 //operators
 const setTheNumbers = () =>{
+    isDot=false;
     if(finalRes!=0 && operator != '' ) //result of prev calculation will be taken as num1 for next calculation
     {
         num1= finalRes;
