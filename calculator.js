@@ -136,12 +136,15 @@ divide.addEventListener('click', ()=>{
 
 
 equals.addEventListener('click', ()=>{
-    // displayValue= fDisplay(equals)
     fAllClear();
-    finalRes= operate(Number(num1), Number(num2), operator );
+    if(num2==='')
+       num2=1;
+    if(num2==='0' && operator==='/')
+       finalRes= 'ERROR';
+    else
+        finalRes= operate(Number(num1), Number(num2), operator );
     screen.textContent= /*'Ans: '+*/ finalRes;
-   // resetVar();
-    isResOnDisplay=true;
+        isResOnDisplay=true;
 })
 
 allClear.addEventListener('click', ()=> {
