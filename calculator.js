@@ -122,12 +122,12 @@ const setTheNumbers = () =>{
     flag= true;
     finalRes=0;
 }
+let operatorAlreadyAdded = false;
 plus.addEventListener('click', ()=>{
     setTheNumbers();
     operator= plus.textContent;
     displayValue= fDisplay(plus);
-    
-    
+
 })
 minus.addEventListener('click', ()=>{
     setTheNumbers();
@@ -152,7 +152,11 @@ divide.addEventListener('click', ()=>{
 equals.addEventListener('click', ()=>{
     fAllClear();
     if(num2==='')
-       num2=1;
+       {    if(operator==='*' || operator==='/')
+                num2=1;
+            else
+                num2=0;
+        }
     if(num2==='0' && operator==='/')
        finalRes= 'ERROR';
     else
