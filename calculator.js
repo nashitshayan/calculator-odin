@@ -67,6 +67,9 @@ const listOfNumbers= Array.from(numbersDiv.children);
 listOfNumbers.forEach(numberElem => {
   
     numberElem.addEventListener('click', ()=>{
+        // multiple operators handling
+        operatorAlreadyAdded = false;
+        
         //stop multiple decimal points
         if(numberElem=== dot && isDot)
         {
@@ -121,27 +124,36 @@ const setTheNumbers = () =>{
     
     flag= true;
     finalRes=0;
+    operatorAlreadyAdded = true;
 }
 let operatorAlreadyAdded = false;
 plus.addEventListener('click', ()=>{
+    if(operatorAlreadyAdded)
+        return;
     setTheNumbers();
     operator= plus.textContent;
     displayValue= fDisplay(plus);
 
 })
 minus.addEventListener('click', ()=>{
+     if(operatorAlreadyAdded)
+        return;
     setTheNumbers();
     operator= minus.textContent;
     displayValue= fDisplay(minus);
     
 })
 multiply.addEventListener('click', ()=>{
+     if(operatorAlreadyAdded)
+        return;
     setTheNumbers();
     operator= multiply.textContent;
     displayValue= fDisplay(multiply);
     
 })
 divide.addEventListener('click', ()=>{
+     if(operatorAlreadyAdded)
+        return;
     setTheNumbers();
     operator= divide.textContent;
     displayValue= fDisplay(divide);
