@@ -15,12 +15,11 @@ const operate = (num1, num2, operator)=>{
         '*': fMultiply(num1,num2),
         '/': fDivide(num1,num2),
     }
-    if(operation[operator]%1!=0)
+    if(operation[operator]%1!=0) //if the result is in decimal, then only have 11 decimals
         return Number((operation[operator]).toFixed(11));
     return operation[operator];
 }
 
-//console.log(typeof Number(operate(2,3,'/').toFixed(9)))
 //grabbing number and operator btns
 const one = document.getElementById('one');
 const two = document.getElementById('two');
@@ -45,13 +44,30 @@ const allClear = document.getElementById('allClear');
 const screen = document.getElementById('screen');
 let displayValue='';
 
+let isResOnDisplay= false;
+const numbersDiv= document.querySelector('.numbers');
+const listOfNumbers= Array.from(numbersDiv.children);
+
+let num1= 0;
+let num2= '';
+let operator= '';
+let flag = false;
+let finalRes= 0;
+let isDot=false;
+let operatorAlreadyAdded = false;
+
+//display 
 const fDisplay = (elem)=>{
      screen.textContent+= elem.textContent;
      return screen.textContent;
 }
+
+//clear screen
 const fAllClear= ()=>{
     screen.textContent = '';
 }
+
+//reset variables
 const resetVar = ()=>{
     num1= 0;
     num2= '';
@@ -60,10 +76,8 @@ const resetVar = ()=>{
     isDot=false;
 }
 
-let isResOnDisplay= false;
-const numbersDiv= document.querySelector('.numbers');
-const listOfNumbers= Array.from(numbersDiv.children);
 
+//loop through all numbers and attach the eventlistener
 listOfNumbers.forEach(numberElem => {
   
     numberElem.addEventListener('click', ()=>{
@@ -76,17 +90,20 @@ listOfNumbers.forEach(numberElem => {
             return;
         }
         else {
-            if(isResOnDisplay)
+            if(isResOnDisplay) //if there is prev result on screen
          {
-             resetVar();
+            resetVar();
             screen.textContent='';
             isResOnDisplay=false;
         }
-        if(flag)
+
+        //if first number and operator already input
+        if(flag) 
         {
             num2+=numberElem.textContent;
         }
         displayValue= fDisplay(numberElem);
+
         if(numberElem === dot) // set isDot to true for the first entry of dot.
             {
                 isDot=true;
@@ -97,12 +114,7 @@ listOfNumbers.forEach(numberElem => {
 })
 
 
- let num1= 0;
- let num2= '';
- let operator= '';
- let flag = false;
- let finalRes= 0;
- let isDot=false;
+
 
 
 //operators
@@ -126,7 +138,8 @@ const setTheNumbers = () =>{
     finalRes=0;
     operatorAlreadyAdded = true;
 }
-let operatorAlreadyAdded = false;
+
+
 plus.addEventListener('click', ()=>{
     if(operatorAlreadyAdded)
         return;
