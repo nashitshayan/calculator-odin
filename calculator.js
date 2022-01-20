@@ -45,8 +45,7 @@ const screen = document.getElementById('screen');
 let displayValue='';
 
 let isResOnDisplay= false;
-const numbersDiv= document.querySelector('.numbers');
-const listOfNumbers= Array.from(numbersDiv.children);
+
 
 let num1= 0;
 let num2= '';
@@ -211,7 +210,7 @@ document.addEventListener('click', (e)=>{
 
 //keyboard support
 
-document.addEventListener('keypress', (e)=> {
+document.addEventListener('keydown', (e)=> {
     if((Number(e.key)>=0 && Number(e.key)<=9)|| e.key==='.')
         handleNumberInput(e.key)
 
@@ -220,6 +219,8 @@ document.addEventListener('keypress', (e)=> {
         
     else if (e.key==='Enter')
         handleEquals();
+    else if(e.key==='Delete')
+        allCLear();
     else if (e.key==='Backspace')
         backSpace();
 })
