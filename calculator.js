@@ -20,33 +20,32 @@ const operate = (num1, num2, operator)=>{
     return operation[operator];
 }
 
-//grabbing number and operator btns
-const one = document.getElementById('one');
-const two = document.getElementById('two');
-const three = document.getElementById('three');
-const four = document.getElementById('four');
-const five = document.getElementById('five');
-const six = document.getElementById('six');
-const seven = document.getElementById('seven');
-const eight = document.getElementById('eight');
-const nine = document.getElementById('nine');
-const zero = document.getElementById('zero');
-const dot = document.getElementById('dot');
 
-const plus= document.getElementById('plus');
-const minus = document.getElementById('minus');
-const multiply = document.getElementById('multiply');
-const divide = document.getElementById('divide');
-const equals = document.getElementById('equals');
-const del = document.getElementById('delete');
-const allClear = document.getElementById('allClear');
+const numberList= [
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+    'zero',
+    'dot'
+]
 
+const operatorList = [
+    'plus',
+    'minus',
+    'multiply',
+    'divide'
+]
 const screen = document.getElementById('screen');
 let displayValue='';
 
 let isResOnDisplay= false;
-const numbersDiv= document.querySelector('.numbers');
-const listOfNumbers= Array.from(numbersDiv.children);
+
 
 let num1= 0;
 let num2= '';
@@ -58,12 +57,18 @@ let operatorAlreadyAdded = false;
 
 //display 
 const fDisplay = (elem)=>{
-     screen.textContent+= elem.textContent;
-     return screen.textContent;
+    screen.textContent+= typeof elem==='object'? elem.textContent:elem;
+    // if(typeof elem==='object')
+    //    screen.textContent+= elem.textContent;
+    // else 
+    //     screen.textContent+=elem;
+
+    return screen.textContent;
+
 }
 
 //clear screen
-const fAllClear= ()=>{
+const clearScreen= ()=>{
     screen.textContent = '';
 }
 
@@ -77,48 +82,39 @@ const resetVar = ()=>{
 }
 
 
-//loop through all numbers and attach the eventlistener
-listOfNumbers.forEach(numberElem => {
-  
-    numberElem.addEventListener('click', ()=>{
-        // multiple operators handling
-        operatorAlreadyAdded = false;
+
+const handleNumberInput= (numberElem)=>{
+    // multiple operators handling
+    operatorAlreadyAdded = false;
         
-        //stop multiple decimal points
-        if(numberElem=== dot && isDot)
-        {
-            return;
-        }
-        else {
-            if(isResOnDisplay) //if there is prev result on screen
-         {
-            resetVar();
-            screen.textContent='';
-            isResOnDisplay=false;
-        }
+    //stop multiple decimal points
+    
+    if((numberElem=== dot || numberElem==='.') && isDot)
+        return;
+    else {
+        if(isResOnDisplay) //if there is prev result on screen
+     {
+        resetVar();
+        screen.textContent='';
+        isResOnDisplay=false;
+    }
 
-        //if first number and operator already input
-        if(flag) 
-        {
-            num2+=numberElem.textContent;
-        }
-        displayValue= fDisplay(numberElem);
+     //if first number and operator already input
+     if(flag) 
+        num2+= typeof numberElem ==='object'? numberElem.textContent : numberElem;
+        
+     displayValue= fDisplay(numberElem);
 
-        if(numberElem === dot) // set isDot to true for the first entry of dot.
-            {
-                isDot=true;
-            }
-        }
-       
-    })
-})
+     if(numberElem === dot || numberElem==='.') // set isDot to true for the first entry of dot.
+         isDot=true;
+    }
+}
 
 
 
+const handleOperatorInput = (operatorElem) =>{
+    if(operatorAlreadyAdded) return;
 
-
-//operators
-const setTheNumbers = () =>{
     isDot=false;
     if(finalRes!=0 && operator != '' ) //result of prev calculation will be taken as num1 for next calculation
     {
@@ -130,74 +126,88 @@ const setTheNumbers = () =>{
     else if(operator != '')
         {
             num1= operate(Number(num1), Number(num2), operator );
-            num2='';}
+            num2='';
+        }
     else
         num1= displayValue;
     
     flag= true;
     finalRes=0;
     operatorAlreadyAdded = true;
+    
+    operator= (typeof operatorElem==='object')? operatorElem.textContent : operatorElem;
+    displayValue= fDisplay(operatorElem);
 }
 
 
-plus.addEventListener('click', ()=>{
-    if(operatorAlreadyAdded)
-        return;
-    setTheNumbers();
-    operator= plus.textContent;
-    displayValue= fDisplay(plus);
+const handleEquals = ()=>{
+            clearScreen();
 
-})
-minus.addEventListener('click', ()=>{
-     if(operatorAlreadyAdded)
-        return;
-    setTheNumbers();
-    operator= minus.textContent;
-    displayValue= fDisplay(minus);
-    
-})
-multiply.addEventListener('click', ()=>{
-     if(operatorAlreadyAdded)
-        return;
-    setTheNumbers();
-    operator= multiply.textContent;
-    displayValue= fDisplay(multiply);
-    
-})
-divide.addEventListener('click', ()=>{
-     if(operatorAlreadyAdded)
-        return;
-    setTheNumbers();
-    operator= divide.textContent;
-    displayValue= fDisplay(divide);
-    
-})
+            if(num2==='') num2= (operator==='*' || operator==='/')? 1: 0;
 
+            if((num2==='0' && operator==='/')|| operator==='') return fDisplay('ERROR');
 
-equals.addEventListener('click', ()=>{
-    fAllClear();
-    if(num2==='')
-       {    if(operator==='*' || operator==='/')
-                num2=1;
-            else
-                num2=0;
-        }
-    if(num2==='0' && operator==='/')
-       finalRes= 'ERROR';
-    else
-        finalRes= operate(Number(num1), Number(num2), operator );
-    screen.textContent= /*'Ans: '+*/ finalRes;
-        isResOnDisplay=true;
-})
+            finalRes= operate(Number(num1), Number(num2), operator );
+            fDisplay(finalRes);                
+            isResOnDisplay=true;
+}
 
-allClear.addEventListener('click', ()=> {
-    fAllClear();
-    resetVar();
-    finalRes=0;
-})
-del.addEventListener('click', ()=>{
+const allCLear = ()=>{
+            clearScreen();
+            resetVar();
+            finalRes=0;
+}
+const backSpace = ()=>{
     if(!isResOnDisplay)
-        screen.textContent=screen.textContent.slice(0,-1);
+        {   
+            if(screen.textContent.slice(-1)==='.') 
+                isDot=false;                
+            screen.textContent=screen.textContent.slice(0,-1);
+        }
+     else
+        allCLear();
+}
+
+//handling click input
+document.addEventListener('click', (e)=>{
+
+    //display numbers
+    if(numberList.includes(e.target.id))
+        handleNumberInput(e.target)
+        
+    //display operators
+    else if(operatorList.includes(e.target.id))
+        handleOperatorInput(e.target);
+    
+    //show the result
+    else if(e.target.id==='equals')
+        handleEquals();
+        
+    //all clear
+    else if (e.target.id==='allClear')
+         allCLear();
+        
+    //delete i.e backspace
+    else if (e.target.id==='delete')
+        backSpace();
+        
 })
 
 
+
+//keyboard support
+
+document.addEventListener('keydown', (e)=> {
+    if((Number(e.key)>=0 && Number(e.key)<=9)|| e.key==='.')
+        handleNumberInput(e.key)
+
+    else if(e.key==='+' || e.key==='-' || e.key==='*' || e.key==='/')
+        handleOperatorInput(e.key)
+        
+    else if (e.key==='Enter')
+        handleEquals();
+    else if(e.key==='Delete')
+        allCLear();
+    else if (e.key==='Backspace')
+        backSpace();
+})
