@@ -52,6 +52,7 @@ justify-content: end;
 
 #screen{
     padding-right: 12px;
+    overflow-x:scroll;
 }
 
 .numbers{

@@ -57,10 +57,11 @@ let operatorAlreadyAdded = false;
 
 //display 
 const fDisplay = (elem)=>{
-    if(typeof elem==='object')
-       screen.textContent+= elem.textContent;
-    else 
-        screen.textContent+=elem;
+    screen.textContent+= typeof elem==='object'? elem.textContent:elem;
+    // if(typeof elem==='object')
+    //    screen.textContent+= elem.textContent;
+    // else 
+    //     screen.textContent+=elem;
 
     return screen.textContent;
 
@@ -112,8 +113,8 @@ const handleNumberInput= (numberElem)=>{
 
 
 const handleOperatorInput = (operatorElem) =>{
-    if(operatorAlreadyAdded)
-            return;
+    if(operatorAlreadyAdded) return;
+
     isDot=false;
     if(finalRes!=0 && operator != '' ) //result of prev calculation will be taken as num1 for next calculation
     {
@@ -125,7 +126,8 @@ const handleOperatorInput = (operatorElem) =>{
     else if(operator != '')
         {
             num1= operate(Number(num1), Number(num2), operator );
-            num2='';}
+            num2='';
+        }
     else
         num1= displayValue;
     
@@ -133,28 +135,21 @@ const handleOperatorInput = (operatorElem) =>{
     finalRes=0;
     operatorAlreadyAdded = true;
     
-    if(typeof operatorElem==='object')
-        operator= operatorElem.textContent;
-    else
-        operator= operatorElem;
+    operator= (typeof operatorElem==='object')? operatorElem.textContent : operatorElem;
     displayValue= fDisplay(operatorElem);
 }
 
 
 const handleEquals = ()=>{
             clearScreen();
-            if(num2==='')
-               {    if(operator==='*' || operator==='/')
-                        num2=1;
-                    else
-                        num2=0;
-                }
-            if(num2==='0' && operator==='/')
-               finalRes= 'ERROR';
-            else
-                finalRes= operate(Number(num1), Number(num2), operator );
-            screen.textContent= /*'Ans: '+*/ finalRes;
-                isResOnDisplay=true;
+
+            if(num2==='') num2= (operator==='*' || operator==='/')? 1: 0;
+
+            if((num2==='0' && operator==='/')|| operator==='') return fDisplay('ERROR');
+
+            finalRes= operate(Number(num1), Number(num2), operator );
+            fDisplay(finalRes);                
+            isResOnDisplay=true;
 }
 
 const allCLear = ()=>{
@@ -164,16 +159,13 @@ const allCLear = ()=>{
 }
 const backSpace = ()=>{
     if(!isResOnDisplay)
-            {   
-                if(screen.textContent.slice(-1)==='.')
-                    isDot=false;
-                screen.textContent=screen.textContent.slice(0,-1);
-                
-            }
-            else
-                {
-                    allCLear();
-                }
+        {   
+            if(screen.textContent.slice(-1)==='.') 
+                isDot=false;                
+            screen.textContent=screen.textContent.slice(0,-1);
+        }
+     else
+        allCLear();
 }
 
 //handling click input
@@ -181,29 +173,24 @@ document.addEventListener('click', (e)=>{
 
     //display numbers
     if(numberList.includes(e.target.id))
-        {
-            handleNumberInput(e.target)
-        }
+        handleNumberInput(e.target)
+        
     //display operators
     else if(operatorList.includes(e.target.id))
-    {
         handleOperatorInput(e.target);
-    }
+    
     //show the result
     else if(e.target.id==='equals')
-        {
-            handleEquals();
-        }
+        handleEquals();
+        
     //all clear
     else if (e.target.id==='allClear')
-        {
-            allCLear();
-        }
+         allCLear();
+        
     //delete i.e backspace
     else if (e.target.id==='delete')
-        {
-            backSpace();
-        }
+        backSpace();
+        
 })
 
 
