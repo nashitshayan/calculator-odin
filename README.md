@@ -5,4 +5,4 @@
 ![projectDemo](https://media.giphy.com/media/vAe6gIHKUFiisBuMqI/giphy.gif)
 
 ## Live URL
-> [CalculatorJS](https://nashitshayan.github.io/calculator-odin/
+> https://nashitshayan.github.io/calculator-odin/
